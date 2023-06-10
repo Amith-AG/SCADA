@@ -1,0 +1,19 @@
+To build the mini SCADA project described, the following requirements and software are necessary:
+
+Hardware Requirements:
+
+Microcontroller Unit: NodeMCU ESP8266 development board
+Display Unit: LCD display or LED display module
+Power Supply Unit: 9V battery, 7805 IC voltage regulator, capacitors, and connectors
+Gas Sensing Unit: MQ4 gas sensor module
+Temperature and Humidity Sensing Unit: DHT22 sensor module
+Heating System: Incandescent light bulb
+Cooling System: 12V DC fan
+Warning System: Buzzer, LED, resistors, and connectors
+Breadboard or PCB (Printed Circuit Board) for circuit connections
+Jumper wires, connectors, and other necessary electronic components
+
+Software Requirements:
+
+Arduino IDE: An integrated development environment for programming the NodeMCU ESP8266 microcontroller board. It can be downloaded from the official Arduino website.
+Libraries: Install the required libraries for the DHT22 sensor and MQTT (Message Queuing Telemetry Transport) protocol, which may include the Adafruit DHT library and PubSubClient library.
