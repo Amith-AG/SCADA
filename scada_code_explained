@@ -1,0 +1,27 @@
+The provided code is written in the Arduino programming language and is used to implement the SCADA functionality for the mini SCADA project. Here's a detailed explanation of the code:
+
+1. Library Inclusions:
+   - The required libraries for the project are included at the beginning of the code using the `#include` directive. These libraries provide necessary functionalities for WiFi communication, LCD display control, Blynk integration, and DHT sensor readings.
+
+2. Variable and Constant Declarations:
+   - Various variables and constants are declared to store sensor readings, pin assignments, authentication credentials, and temperature setpoints. For example, `GAS_SEN` represents the pin for gas sensing, `DHTPIN` and `DHTTYPE` define the pin and type of the DHT22 temperature and humidity sensor, and `auth`, `ssid`, and `pass` store the Blynk authentication token and WiFi network credentials.
+
+3. Object Instantiation:
+   - Objects for the LCD display (`lcd`) and the DHT22 sensor (`dht`) are created using their respective classes. The LCD object is initialized with the appropriate I2C address and display dimensions.
+
+4. Blynk and Timer Setup:
+   - The `setup()` function is executed once during the initialization phase. It starts the serial communication for debugging purposes, configures pin modes, connects to the Blynk server using the provided authentication token, and sets up a timer (`timer.setInterval()`) for a timed event (`myTimerEvent()`).
+   - The LCD display is updated with status messages to indicate the progress of the setup phase.
+
+5. Event Handling and Loop Execution:
+   - The `loop()` function is executed continuously after the `setup()` phase. It handles Blynk-related tasks (`Blynk.run()`) and executes the timer event (`timer.run()`) at regular intervals.
+   - The temperature and humidity readings are obtained from the DHT22 sensor, and if valid, they are displayed on the LCD screen.
+   - The `GAS_LEAK()` function reads the analog value from the gas sensor (`GAS_SENSE_VALUE`) and determines if a gas leakage has occurred. It triggers appropriate actions, such as activating the buzzer, fan, and updating the LCD display accordingly.
+   - The `TEMP_MAINTAIN()` function checks the temperature reading and compares it with predefined temperature setpoints. It controls the fan and heater accordingly and updates the LCD display.
+
+6. Supporting Functions:
+   - `myTimerEvent()`: This function is executed at regular intervals defined by the timer. It updates the Blynk virtual pins with temperature, humidity, and gas leakage values, and sends a notification if gas leakage is detected.
+   - `TEMP_MAINTAIN()`: This function checks the temperature reading and adjusts the fan and heater based on predefined setpoints to maintain a desired temperature range.
+   - `GAS_LEAK()`: This function reads the gas sensor value and performs actions based on the gas concentration, including activating the buzzer, fan, and updating the gas leakage status.
+
+It's important to note that this code assumes the necessary libraries are installed and the hardware connections are correctly made. Additionally, modifications may be required based on specific hardware configurations and project requirements.
