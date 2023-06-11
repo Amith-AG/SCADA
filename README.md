@@ -1,4 +1,4 @@
-#Design and Implementation of a Miniature SCADA System for Industrial Parameter Monitoring and Control
+# Design and Implementation of a Miniature SCADA System for Industrial Parameter Monitoring and Control
 
 Abstract:
 This abstract presents a mini model Supervisory Control and Data Acquisition (SCADA) project consisting of eight interconnected block units. The project aims to develop a compact SCADA system that monitors critical parameters in a factory environment, such as temperature, humidity, and gas leakage, while providing control capabilities and warnings for enhanced safety and efficiency.
