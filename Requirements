@@ -19,3 +19,4 @@ Arduino IDE: An integrated development environment for programming the NodeMCU E
 Libraries: Install the required libraries for the DHT22 sensor and MQTT (Message Queuing Telemetry Transport) protocol, which may include the Adafruit DHT library and PubSubClient library.
 Fritzing: An open-source software tool used for designing electronic circuits, creating schematic diagrams, and creating printed circuit board (PCB) layouts.
 Proteus: A software tool widely used for simulation and design of electronic circuits. It is commonly utilized by engineers, students, and professionals involved in the field of electronics for various purposes, such as circuit prototyping, testing, and PCB design.
+The Blynk IoT app: A mobile application that allows you to remotely control and monitor your connected devices and projects. 
