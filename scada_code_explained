@@ -1,27 +1,161 @@
-The provided code is written in the Arduino programming language and is used to implement the SCADA functionality for the mini SCADA project. Here's a detailed explanation of the code:
+The provided code is an Arduino sketch written for an ESP8266 microcontroller board using the Arduino IDE. Let's go through the code section by section to understand its functionality:
 
-1. Library Inclusions:
-   - The required libraries for the project are included at the beginning of the code using the `#include` directive. These libraries provide necessary functionalities for WiFi communication, LCD display control, Blynk integration, and DHT sensor readings.
+1. Libraries:
+```cpp
+#include <ESP8266WiFi.h>
+#include <LiquidCrystal_I2C.h>
+#include <BlynkSimpleEsp8266.h>
+#include "DHT.h"
+```
+This section includes the necessary libraries for the code. The `ESP8266WiFi` library provides functions for connecting to Wi-Fi networks, the `LiquidCrystal_I2C` library allows communication with the I2C-based LCD display, the `BlynkSimpleEsp8266` library provides the Blynk IoT platform integration, and the `DHT` library is used for reading temperature and humidity from the DHT22 sensor.
 
-2. Variable and Constant Declarations:
-   - Various variables and constants are declared to store sensor readings, pin assignments, authentication credentials, and temperature setpoints. For example, `GAS_SEN` represents the pin for gas sensing, `DHTPIN` and `DHTTYPE` define the pin and type of the DHT22 temperature and humidity sensor, and `auth`, `ssid`, and `pass` store the Blynk authentication token and WiFi network credentials.
+2. Pin Definitions:
+```cpp
+#define DHTPIN D5
+#define DHTTYPE DHT22
+#define GAS_SEN A0
+#define FAN D1
+#define LIGHT D2
+#define Buzzer D7
+```
+These lines define the pin mappings for various components used in the circuit, such as the DHT22 sensor (connected to pin D5), gas sensor (connected to analog pin A0), fan (connected to pin D1), light (connected to pin D2), and buzzer (connected to pin D7).
 
-3. Object Instantiation:
-   - Objects for the LCD display (`lcd`) and the DHT22 sensor (`dht`) are created using their respective classes. The LCD object is initialized with the appropriate I2C address and display dimensions.
+3. Variable Declarations and Initialization:
+```cpp
+int gas = 0;
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+char auth[] = "AMku9sLLkOIXPGKhhzMUMzD0yYREyckm";
+char ssid[] = "OnePlus 6";
+char pass[] = "renjiths";
+float TEMP_SET_MAX = 35;
+float TEMP_SET_MIN = 33;
+float h, t;
+int x, GAS_SENSE_VALUE = 0;
+DHT dht(DHTPIN, DHTTYPE);
+BlynkTimer timer;
+```
+This section declares and initializes various variables used in the code, including gas (for gas leakage detection), an instance of the LiquidCrystal_I2C class for controlling the LCD display, authentication token, Wi-Fi credentials, temperature and humidity variables (h and t), gas sensor value (GAS_SENSE_VALUE), an instance of the DHT class for reading temperature and humidity values, and a BlynkTimer object for scheduling periodic events.
 
-4. Blynk and Timer Setup:
-   - The `setup()` function is executed once during the initialization phase. It starts the serial communication for debugging purposes, configures pin modes, connects to the Blynk server using the provided authentication token, and sets up a timer (`timer.setInterval()`) for a timed event (`myTimerEvent()`).
-   - The LCD display is updated with status messages to indicate the progress of the setup phase.
+4. Function Definitions:
+```cpp
+void myTimerEvent()
+{
+  Blynk.virtualWrite(V0, t);
+  Blynk.virtualWrite(V1, h);
+  Blynk.virtualWrite(V2, GAS_SENSE_VALUE);
+  
+  if (gas == 1) {
+    Blynk.notify("GAS Leakage Happened !");
+  }
+}
 
-5. Event Handling and Loop Execution:
-   - The `loop()` function is executed continuously after the `setup()` phase. It handles Blynk-related tasks (`Blynk.run()`) and executes the timer event (`timer.run()`) at regular intervals.
-   - The temperature and humidity readings are obtained from the DHT22 sensor, and if valid, they are displayed on the LCD screen.
-   - The `GAS_LEAK()` function reads the analog value from the gas sensor (`GAS_SENSE_VALUE`) and determines if a gas leakage has occurred. It triggers appropriate actions, such as activating the buzzer, fan, and updating the LCD display accordingly.
-   - The `TEMP_MAINTAIN()` function checks the temperature reading and compares it with predefined temperature setpoints. It controls the fan and heater accordingly and updates the LCD display.
+void setup()
+{
+  // Initialization code
+}
 
-6. Supporting Functions:
-   - `myTimerEvent()`: This function is executed at regular intervals defined by the timer. It updates the Blynk virtual pins with temperature, humidity, and gas leakage values, and sends a notification if gas leakage is detected.
-   - `TEMP_MAINTAIN()`: This function checks the temperature reading and adjusts the fan and heater based on predefined setpoints to maintain a desired temperature range.
-   - `GAS_LEAK()`: This function reads the gas sensor value and performs actions based on the gas concentration, including activating the buzzer, fan, and updating the gas leakage status.
+void loop()
+{
+  // Main code
+}
 
-It's important to note that this code assumes the necessary libraries are installed and the hardware connections are correctly made. Additionally, modifications may be required based on specific hardware configurations and project requirements.
+void TEMP_MAINTAIN()
+{
+  // Temperature maintenance code
+}
+
+void GAS_LEAK()
+{
+  // Gas leakage detection code
+}
+```
+These lines define the functions used in the code. `myTimerEvent()` is a function that is called periodically by the `timer` object. It sends the temperature, humidity, and gas sensor values to the Blynk app and sends a notification if a gas leakage is detected. `setup()` is the setup function that runs once when the microcontroller starts. `loop()` is the main function that runs repeatedly after the setup. `TEMP_MAINTAIN()` and `GAS_LEAK()` are helper functions for handling temperature maintenance and gas leakage detection, respectively.
+
+5. Setup Function:
+```cpp
+void setup()
+{
+  Serial.begin(9600);
+  
+  pinMode(GAS_SEN, INPUT
+
+);
+  pinMode(Buzzer, OUTPUT);
+  pinMode(FAN, OUTPUT);
+  pinMode(LIGHT, OUTPUT);
+  
+  digitalWrite(LIGHT, LOW);
+  digitalWrite(FAN, LOW);
+  
+  lcd.begin(D4, D3);
+  lcd.backlight();
+  
+  lcd.setCursor(0, 0);
+  lcd.print("Connecting Blynk");
+  
+  Blynk.begin(auth, ssid, pass);
+  
+  timer.setInterval(5000L, myTimerEvent);
+  
+  lcd.setCursor(0, 1);
+  lcd.print(" connected ");
+  
+  delay(3000);
+  
+  dht.begin();
+  
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Services Started");
+  
+  digitalWrite(Buzzer, HIGH);
+  delay(50);
+  digitalWrite(Buzzer, LOW);
+  delay(50);
+  digitalWrite(Buzzer, HIGH);
+  delay(50);
+  digitalWrite(Buzzer, LOW);
+  delay(50);
+  digitalWrite(Buzzer, HIGH);
+  delay(50);
+  digitalWrite(Buzzer, LOW);
+  
+  delay(2000);
+  lcd.clear();
+}
+```
+The setup function is responsible for initializing various components, setting up the LCD display, connecting to Wi-Fi, and initializing the Blynk integration. It also sets the interval for the `myTimerEvent()` function to be called every 5 seconds. The LCD display shows messages indicating the status of the setup process.
+
+6. Loop Function:
+```cpp
+void loop()
+{
+  Blynk.run();
+  timer.run();
+  
+  h = dht.readHumidity();
+  t = dht.readTemperature();
+  
+  if (isnan(h) || isnan(t)) {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("DHT Sensor Error");
+    lcd.setCursor(3, 1);
+    lcd.print("Restarting");
+    delay(2000);
+    ESP.restart();
+  }
+  
+  GAS_LEAK();
+  
+  if (gas == 0) {
+    TEMP_MAINTAIN();
+    delay(4000);
+    lcd.clear();
+    // Display temperature and humidity on LCD
+  }
+}
+```
+The loop function is the main part of the code that runs repeatedly. It calls the `Blynk.run()` and `timer.run()` functions to handle Blynk communication and timer events, respectively. It also reads temperature and humidity values from the DHT22 sensor. If the sensor readings are valid, it proceeds to check for gas leakage using the `GAS_LEAK()` function. If no gas leakage is detected, it calls the `TEMP_MAINTAIN()` function to handle temperature maintenance and displays temperature and humidity readings on the LCD display.
+
+That's a summary of the provided code. It combines Wi-Fi connectivity, sensor readings, LCD display control, Blynk integration, and control of various components based on sensor values.
